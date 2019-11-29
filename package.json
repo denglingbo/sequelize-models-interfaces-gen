@@ -1,0 +1,31 @@
+{
+  "name": "sequelize-models-interfaces-gen",
+  "version": "0.1.0",
+  "description": "interfaces gen",
+  "main": "dist/index.js",
+  "keywords": [
+    "sequelize",
+    "typescript",
+    "interface-gererate"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "denglingbo@126.com",
+  "license": "ISC",
+  "dependencies": {
+    "acorn": "^7.1.0",
+    "acorn-walk": "^7.0.0",
+    "babylon": "^7.0.0-beta.47",
+    "lodash": "^4.17.15",
+    "sequelize": "^5.21.1",
+    "ts-morph": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "nodemon": "^1.19.2",
+    "ts-morph": "^5.0.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4"
+  }
+}
