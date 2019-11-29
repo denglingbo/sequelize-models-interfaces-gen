@@ -75,13 +75,29 @@ function getDefineModelData(args: any): IModelGenGetData {
 }
 
 /**
+ * 给 modelGen 设置 defineModel 中获取到的数据
+ * @param modelGen 
+ * @param args 
+ */
+function setModelData(modelGen: ModelGen, args: any[]) {
+  const { interfaceName, props, source } = getDefineModelData(args);
+  if (interfaceName) {
+    modelGen.addInterface(interfaceName);
+  }
+
+  if (source) {
+    modelGen.addSource(source);
+  }
+
+  modelGen.addProperties(props);
+}
+
+/**
  * 创建声明文件
  * @param ast
  */
 function createInterfaces(ast: any): IModelGenGetData | null {
   const mg = new ModelGen();
-  // 判断文件中是否有 const model = xxxxx
-  let hasModelVariable = false;
 
   walk.ancestor(ast, {
     /**
@@ -101,20 +117,7 @@ function createInterfaces(ast: any): IModelGenGetData | null {
           n.type.callee
         ) {
           if (n.type.callee.property.name === MODEL_KEY) {
-            const { interfaceName, props, source } = getDefineModelData(
-              expression.right.arguments
-            );
-            if (interfaceName) {
-              mg.addInterface(interfaceName);
-            }
-
-            if (source) {
-              mg.addSource(source);
-            }
-
-            if (!hasModelVariable) {
-              mg.addProperties(props);
-            }
+            setModelData(mg, expression.right.arguments);
           }
         }
       });
@@ -133,15 +136,7 @@ function createInterfaces(ast: any): IModelGenGetData | null {
           n.init.callee.property &&
           n.init.callee.property.name === MODEL_KEY
         ) {
-          hasModelVariable = true;
-
-          const { interfaceName, props } = getDefineModelData(n.init.arguments);
-
-          if (interfaceName) {
-            mg.addInterface(interfaceName);
-          }
-
-          mg.addProperties(props);
+          setModelData(mg, n.init.arguments);
         }
       });
     }
