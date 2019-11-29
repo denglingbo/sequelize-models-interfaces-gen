@@ -108,13 +108,26 @@ function getDefineModelData(args) {
     return data;
 }
 /**
+ * 给 modelGen 设置 defineModel 中获取到的数据
+ * @param modelGen
+ * @param args
+ */
+function setModelData(modelGen, args) {
+    var _a = getDefineModelData(args), interfaceName = _a.interfaceName, props = _a.props, source = _a.source;
+    if (interfaceName) {
+        modelGen.addInterface(interfaceName);
+    }
+    if (source) {
+        modelGen.addSource(source);
+    }
+    modelGen.addProperties(props);
+}
+/**
  * 创建声明文件
  * @param ast
  */
 function createInterfaces(ast) {
     var mg = new ModelGen_1.default();
-    // 判断文件中是否有 const model = xxxxx
-    var hasModelVariable = false;
     walk.ancestor(ast, {
         /**
          * 从 ExpressionStatement export.default 上获取 Interface 名以及数据
@@ -131,16 +144,7 @@ function createInterfaces(ast) {
                         expression.right) &&
                     n.type.callee) {
                     if (n.type.callee.property.name === MODEL_KEY) {
-                        var _a = getDefineModelData(expression.right.arguments), interfaceName = _a.interfaceName, props = _a.props, source = _a.source;
-                        if (interfaceName) {
-                            mg.addInterface(interfaceName);
-                        }
-                        if (source) {
-                            mg.addSource(source);
-                        }
-                        if (!hasModelVariable) {
-                            mg.addProperties(props);
-                        }
+                        setModelData(mg, expression.right.arguments);
                     }
                 }
             });
@@ -156,12 +160,7 @@ function createInterfaces(ast) {
                     n.init &&
                     n.init.callee.property &&
                     n.init.callee.property.name === MODEL_KEY) {
-                    hasModelVariable = true;
-                    var _a = getDefineModelData(n.init.arguments), interfaceName = _a.interfaceName, props = _a.props;
-                    if (interfaceName) {
-                        mg.addInterface(interfaceName);
-                    }
-                    mg.addProperties(props);
+                    setModelData(mg, n.init.arguments);
                 }
             });
         }
