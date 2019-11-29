@@ -39,9 +39,14 @@ interfacesGen({
 });
 ```
 
-#### Model <path/src/models/ArrivalShippingCartonNo.ts>
+#### Model <path/src/models/*>
+```
 
 ```
+  ArrivalShippingCartonNo: path/src/models/ArrivalShippingCartonNo.ts
+  ArrivalShippingDetail: path/src/models/ArrivalShippingDetail.ts
+```
+// PATH: path/src/models/ArrivalShippingCartonNo.ts
 import db, { TYPES, IModelDefaultItem } from '../db';
 
 //到货单快递信息表
@@ -54,6 +59,40 @@ export default db.defineModel('arrival_shipping_carton_no', {
     type: TYPES.BIGINT,
     comment: '箱号',
   },
+});
+
+// PATH: path/src/models/ArrivalShippingDetail.ts
+import db, { TYPES, IModelDefaultItem } from '../db';
+
+//到货单明细表
+export default db.defineModel('ArrivalShippingDetail', {
+  arrival_no: {
+    type: TYPES.STRING(100),
+    comment: '到货单号'
+  },
+  sku_no: {
+    type: TYPES.STRING(30),
+    comment: 'SKU_NO'
+  },
+  expected_arrival_qty: {
+    type: TYPES.INTEGER,
+    comment: '预计收货数量'
+  },
+  actual_arrival_qty: {
+    type: TYPES.INTEGER,
+    allowNull: true,
+    comment: '实际收货数量'
+  },
+  good_qty: {
+    type: TYPES.INTEGER,
+    allowNull: true,
+    comment: '实收正品数量'
+  },
+  damaged_qty: {
+    type: TYPES.INTEGER,
+    allowNull: true,
+    comment: '实收残品数量'
+  }
 });
 ```
 
@@ -70,6 +109,19 @@ import db, { IModelDefaultItem } from "../db";
 export interface IArrivalShippingCartonNoData extends IModelDefaultItem, IRequelizeItem {
     arrival_no: string;
     carton_no: number;
+}
+
+/**
+ * Auto gererated by sequelize-models-interfaces-gen
+ * db table name: arrival_shipping_detail
+ */
+export interface IArrivalShippingDetailData {
+    arrival_no: string;
+    sku_no: string;
+    expected_arrival_qty: number;
+    actual_arrival_qty: number;
+    good_qty: number;
+    damaged_qty: number;
 }
 ```
 
