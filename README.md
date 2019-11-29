@@ -40,11 +40,14 @@ interfacesGen({
 ```
 
 #### Model <path/src/models/*>
-```
 
+##### files
 ```
   ArrivalShippingCartonNo: path/src/models/ArrivalShippingCartonNo.ts
   ArrivalShippingDetail: path/src/models/ArrivalShippingDetail.ts
+```
+
+##### ArrivalShippingCartonNo.ts
 ```
 // PATH: path/src/models/ArrivalShippingCartonNo.ts
 import db, { TYPES, IModelDefaultItem } from '../db';
@@ -60,7 +63,10 @@ export default db.defineModel('arrival_shipping_carton_no', {
     comment: '箱号',
   },
 });
+```
 
+##### ArrivalShippingDetail.ts
+```
 // PATH: path/src/models/ArrivalShippingDetail.ts
 import db, { TYPES, IModelDefaultItem } from '../db';
 
